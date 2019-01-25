@@ -1,0 +1,17 @@
+---
+
+- name: install oracle jdk
+  hosts: all
+
+  become: true
+  become_user: root
+
+  vars_files:
+    - roles/java/vars/defaults.yaml
+
+  vars:
+    - version: 8u201
+    # - version: "11.0.2"
+  
+  roles:
+    - java

@@ -1,0 +1,16 @@
+
+download_path: /tmp
+release_path: /usr/local/product
+
+# oracle jdk
+jdk:
+  8u201:
+    url: https://ops-software-binary-1255440668.cos.ap-chengdu.myqcloud.com/oracle-jdk/8u201/jdk-8u201-linux-x64.tar.gz
+    dirname: jdk1.8.0_201
+    filename: jdk-8u201-linux-x64.tar.gz
+    checksum: sha256:cb700cc0ac3ddc728a567c350881ce7e25118eaf7ca97ca9705d4580c506e370
+  "11.0.2":
+    url: https://download.oracle.com/otn-pub/java/jdk/11.0.2+9/f51449fcd52f4d52b93a989c5c56ed3c/jdk-11.0.2_linux-x64_bin.tar.gz 
+    dirname: jdk-11.0.2
+    filename: jdk-11.0.2_linux-x64_bin.tar.gz
+    checksum: sha256:7b4fd8ffcf53e9ff699d964a80e4abf9706b5bdb5644a765c2b96f99e3a2cdc8
