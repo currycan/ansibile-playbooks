@@ -1,0 +1,23 @@
+
+- name: download {{ REDIS_PACKAGE }}.tar.gz
+  get_url:
+    url: "{{ REDIS_DOWNLOAD_URL }}"
+    dest: /tmp/{{ REDIS_PACKAGE }}.tar.gz
+    checksum: sha256:{{ REDIS_DOWNLOAD_SHA }}
+
+- name: mkdir -p src /usr/src/redis
+  file:
+    dest: /usr/src/redis
+    state: directory
+
+- name: unarchive {{ REDIS_PACKAGE }}
+  unarchive:
+    src:  /tmp/{{ REDIS_PACKAGE }}.tar.gz
+    dest: /usr/src/redis
+    remote_src: yes
+
+- name: compile {{ REDIS_PACKAGE }}
+  shell: set -ex && MALLOC=libc make -C /usr/src/redis/{{ REDIS_PACKAGE }} && make -C /usr/src/redis/{{ REDIS_PACKAGE }} install
+
+- name: redis-server -v
+  shell: redis-server -v

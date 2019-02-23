@@ -1,0 +1,7 @@
+REDIS_PACKAGE: redis-{{ REDIS_VERSION }}
+
+DOWNLOAD_URL:
+  REDIS: http://download.redis.io/releases/redis-{{ REDIS_VERSION }}.tar.gz
+
+REDIS_DOWNLOAD_URL: "{{ DOWNLOAD_URL['REDIS'] }}"
+

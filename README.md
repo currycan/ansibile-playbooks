@@ -10,3 +10,22 @@ ansible-playbook 2.5.5
 
 install oracle jdk
 
+## redis
+
+`inventory.hosts`
+
+```ini
+[redis]
+your_hosts
+```
+
++ 执行安装
+```bash
+# way1
+## 编辑 `roles/redis/vars/custom.yml` ,设置安装版本和 SHA 校验
+ansible-playbook -i inventory.hosts redis.yml
+
+### or
+ansible-playbook -i inventory.hosts redis.yml -e "REDIS_VERSION=5.0.2" -e "REDIS_DOWNLOAD_SHA=xxxxxx"
+```
+

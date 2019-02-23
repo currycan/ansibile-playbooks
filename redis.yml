@@ -1,0 +1,17 @@
+--- 
+
+- name: install redis
+  hosts: redis
+
+  gather_facts: yes
+
+  become: true
+  become_user: root
+  
+
+  vars_files:
+    - roles/redis/vars/defaults.yml
+    - roles/redis/vars/custom.yml
+    
+  roles:
+    - redis
