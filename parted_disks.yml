@@ -1,0 +1,17 @@
+---
+
+- name: parted disk
+
+  hosts: parted_disk
+
+  gather_facts: true
+  become: true
+  become_user: root
+
+  vars_files:
+    - roles/parted_disks/vars/custom.yml
+    - roles/parted_disks/vars/defaults.yml
+
+  roles:
+    - parted_disks
+

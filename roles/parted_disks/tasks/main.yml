@@ -1,0 +1,11 @@
+# - include_tasks: absent.yml
+#   when: ACTION=='absent'
+
+# - include_tasks: present.yml
+#   when: ACTION=='present'
+
+# - include_tasks: "info.yml"
+#   when: ACTION=='info'
+
+
+- include_tasks: "{{ ACTION }}.yml"

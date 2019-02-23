@@ -1,0 +1,21 @@
+
+# create , parted , mkfs and mount
+## parted
+
+- name: umount disk from /data
+  mount:
+    path: "{{ item.value }}"
+    src: "{{ item.key }}"
+    fstype: ext4
+    state: absent
+  with_dict: "{{ disks }}"
+
+
+- name: absent disks
+  parted:
+    label: gpt
+    device: "{{ item.key }}"
+    number: 1
+    state: absent
+  with_dict: "{{ disks }}"
+

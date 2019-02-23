@@ -1,0 +1,5 @@
+disks:
+  /dev/vdb: /data
+  # /dev/vdc: /data1
+
+ACTION: info

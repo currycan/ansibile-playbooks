@@ -1,0 +1,7 @@
+- name: "info disks"
+  parted:
+    label: gpt
+    device: "{{ item.key }}"
+    number: 1
+    state: info
+  with_dict: "{{ disks }}"

@@ -1,0 +1,39 @@
+
+# create , parted , mkfs and mount
+## parted
+- name: parted disks
+  parted:
+    label: gpt
+    device: "{{ item.key }}"
+    number: 1
+    state: present
+  with_dict: "{{ disks }}"
+
+## mkfs
+- name: make file system
+  filesystem:
+    fstype: ext4
+    dev: "{{ item.key }}"
+  with_dict: "{{ disks }}"
+
+## mount
+- name: create mount point
+  file:
+    dest: "{{ item.value }}"
+    state: directory
+  with_dict: "{{ disks }}"
+
+- name: mount disk to /data
+  mount:
+    path: "{{ item.value }}"
+    src: "{{ item.key }}"
+    fstype: ext4
+    state: mounted
+  with_dict: "{{ disks }}"
+
+- name: chmod 1777 to /data
+  file:
+    dest: "{{ item.value }}"
+    mode: 01777
+  with_dict: "{{ disks }}"
+
