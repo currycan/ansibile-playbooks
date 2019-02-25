@@ -1,0 +1,17 @@
+{
+    "live-restore": {{ live_restore }},
+    "max-concurrent-downloads": 3,
+    "max-concurrent-uploads": 3,
+    "disable-legacy-registry": true,
+    "registry-mirrors": [
+        "{{ registry_mirrors }}"
+    ],
+    "log-driver": "json-file",
+    "log-opts": {
+        "labels": "{{ log_labels }}",
+        "max-size": "{{ log_max_size }}",
+        "max-file": "{{ log_max_file }}"
+    },
+    "bip": "169.254.32.1/24"
+}
+

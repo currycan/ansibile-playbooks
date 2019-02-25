@@ -1,0 +1,27 @@
+---
+# base 
+
+- name: init base environments
+
+  hosts: all
+
+  become: True
+  become_user: root
+
+  vars:
+    # only push daemon.json when docker_install if false
+    # docker_install: false
+    docker_install: true
+    # choose custom var_file
+    # platform: qcloud
+    platform: aliyun
+
+
+  vars_files:
+    - roles/docker/vars/defaults.yml
+    # - "roles/docker/vars/{{ platform }}.yml"
+    - "roles/docker/vars/aliyun.yml"
+    
+  roles:
+    - docker
+

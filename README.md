@@ -63,3 +63,9 @@ ansible-playbook -i inventory.hosts redis.yml
 ansible-playbook -i inventory.hosts redis.yml -e "REDIS_VERSION=5.0.2" -e "REDIS_DOWNLOAD_SHA=xxxxxx"
 ```
 
+
+## docker
+
+```bash
+ansible-playbook -i inventory.hosts docker.yml
+```

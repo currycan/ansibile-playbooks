@@ -1,0 +1,19 @@
+
+# docker repo info
+docker_ce_repo: mirrors.ustc.edu.cn/docker-ce
+# docker_ce_version: 17.03.2.ce-1
+# docker_ce_version: 17.06.2.ce-1
+docker_ce_version: 18.06.3.ce-3.el7
+
+
+
+# /etc/docker/daemon.json
+registry_mirrors: https://registry.docker-cn.com
+log_max_size: 1g
+log_max_file: 5
+log_labels: "io.rancher.project.name,log.ignore"
+live_restore: "true"
+
+# lvm configure
+lvm_vg: docker
+lvm_disk: /dev/vdb

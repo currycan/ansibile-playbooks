@@ -1,0 +1,107 @@
+
+#### init {{ lvm_vg }}
+
+- name: install dependences
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items:
+    - "lvm2"
+
+- name: init {{ lvm_vg }} vg
+  lvg:
+    vg: "{{ lvm_vg }}"
+    pvs: "{{ lvm_disk }}"
+    state: present
+    force: yes
+
+- name: check {{ lvm_vg }}-thinpool
+  shell: "dmsetup info {{ lvm_vg }}-thinpool"
+  register: check_result
+  ignore_errors: True
+
+- name: init thinpool
+  lvol:
+    vg: "{{ lvm_vg }}"
+    lv: thinpool
+    size: 38%VG
+    opts: --wipesignatures y
+  when: check_result|failed
+
+- name: init thinpoolmeta
+  lvol:
+    vg: "{{ lvm_vg }}"
+    lv: thinpoolmeta
+    size: 1%VG
+    opts: --wipesignatures y
+  when: check_result|failed
+
+###### {{ lvm_vg }}-thinpool.profile
+- name: cp {{ lvm_vg }}-thinpool.profile
+  copy: 
+    src: "{{ lvm_vg }}-thinpool.profile"
+    dest: "/etc/lvm/profile/{{ lvm_vg }}-thinpool.profile"
+
+- name: init {{ lvm_vg }}-thinpool
+  shell: "lvconvert -y --zero n -c 512K --thinpool {{ lvm_vg }}/thinpool --poolmetadata {{ lvm_vg }}/thinpoolmeta"
+  when: check_result|failed
+
+- name: init {{ lvm_vg }}-thinpool
+  shell: "lvchange -y --metadataprofile {{ lvm_vg }}-thinpool {{ lvm_vg }}/thinpool"
+  when: check_result|failed
+
+
+####### mount bootstrap
+- name: check bootstrap
+  shell: "dmsetup info {{ lvm_vg }}-bootstrap"
+  register: check_bootstrap_result
+  ignore_errors: True
+
+- name: init bootstrap
+  lvol:
+    vg: "{{ lvm_vg }}"
+    lv: bootstrap
+    size: 40%VG
+    opts: --wipesignatures y
+  when: check_bootstrap_result|failed
+
+- name: format {{ lvm_vg }}-bootstrap 
+  filesystem:
+    fstype: ext4
+    dev: "/dev/mapper/{{ lvm_vg }}-bootstrap"
+
+
+- name: Mount up bootstrap
+  mount:
+    path: "/var/lib/{{ lvm_vg }}"
+    src: "/dev/mapper/{{ lvm_vg }}-bootstrap"
+    fstype: ext4
+    state: mounted
+
+
+####### mount data
+- name: check data
+  shell: "dmsetup info {{ lvm_vg }}-data"
+  register: check_data_result
+  ignore_errors: True
+
+- name: init data
+  lvol:
+    vg: "{{ lvm_vg }}"
+    lv: data
+    size: 20%VG
+    opts: --wipesignatures y
+  when: check_data_result|failed
+
+- name: format {{ lvm_vg }}-bootstrap 
+  filesystem:
+    fstype: ext4
+    dev: "/dev/mapper/{{ lvm_vg }}-data"
+
+- name: Mount up data
+  mount:
+    path: /data
+    src: "/dev/mapper/{{ lvm_vg }}-data"
+    fstype: ext4
+    state: mounted
+

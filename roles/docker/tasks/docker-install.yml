@@ -1,0 +1,39 @@
+
+# docker install
+
+- name: install docker-ce.repo
+  template:
+    src: docker-ce-stable.repo.j2
+    dest: /etc/yum.repos.d/docker-ce.repo
+  when: docker_install
+
+- name: install docker-ce-{{ docker_ce_version }} 
+  yum: 
+    name: docker-ce-{{ docker_ce_version }}
+    state: installed
+    skip_broken: yes
+  notify:
+    - enable docker
+    - start docker 
+  when: docker_install
+
+# - name: install docker-ce-{{ docker_ce_version }} 
+#   shell: yum -y install docker-ce-17.03.2.ce-1.el7.centos.x86_64 docker-ce-selinux-17.03.2.ce-1.el7.centos.noarch  --skip-broken
+#   notify:
+#     - enable docker
+#     - start docker 
+#   when: docker_install
+
+- name: create /etc/docker
+  file:
+    dest: /etc/docker/
+    state: directory
+    
+- name: push daemon.json
+  template:
+    src: daemon.json.j2
+    dest: /etc/docker/daemon.json
+
+  notify:
+    - reload docker
+
